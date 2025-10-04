@@ -4,23 +4,43 @@
   <meta charset="utf-8"/>
   <title>Video Downloader</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
   <style>
-    body{font-family:Arial;margin:20px;background:#111;color:#eee}
-    input{width:100%;padding:10px;margin:10px 0;font-size:16px}
-    button{width:100%;padding:12px;background:#e91e63;color:#fff;border:0;font-size:16px}
-    #msg{margin-top:10px}
+    :root{--bg:#0f0c29;--card:#24243e;--accent:#e91e63;--grad:linear-gradient(135deg,#667eea 0%,#764ba2 100%)}
+    *{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',sans-serif}
+    body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);color:#fff;padding:20px}
+    .glass{width:100%;max-width:420px;background:rgba(255,255,255,.08);border-radius:16px;box-shadow:0 4px 30px rgba(0,0,0,.3);backdrop-filter:blur(5px);border:1px solid rgba(255,255,255,.1);padding:35px 30px;text-align:center}
+    h2{font-size:26px;margin-bottom:8px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    p.sub{font-size:14px;opacity:.7;margin-bottom:25px}
+    input{width:100%;padding:14px 16px;border:none;border-radius:8px;font-size:16px;background:rgba(255,255,255,.12);color:#fff;caret-color:var(--accent)}
+    input::placeholder{color:#ccc}
+    button{width:100%;padding:14px;margin-top:18px;border:none;border-radius:8px;font-size:17px;font-weight:600;background:var(--grad);color:#fff;cursor:pointer;transition:.3s}
+    button:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(102,126,234,.4)}
+    #msg{margin-top:15px;font-size:14px;min-height:20px}
+    .spinner{border:3px solid rgba(255,255,255,.2);border-top:3px solid #fff;border-radius:50%;width:20px;height:20px;animation:spin 1s linear infinite;display:none;margin:10px auto}
+    @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
   </style>
 </head>
 <body>
-  <h2>Link डालो → Video डाउनलोड</h2>
-  <script>
-  document.getElementById('url').disabled = false;
-</script>
-  <script src="https://cdn.jsdelivr.net/npm/yt-dlp-wasm@latest/dist/yt-dlp.min.js"></script>
-  <button onclick="getVideo()">Download</button>
-  <p id="msg"></p>
+  <div class="glass">
+    <h2>Video Downloader</h2>
+    <p class="sub">Paste link → Get MP4/MP3 instantly</p>
+    <input id="url" placeholder="YouTube / FB / Insta / Any link">
+    <button onclick="getVideo()">Download</button>
+    <div class="spinner" id="spin"></div>
+    <p id="msg"></p>
+  </div>
 
-  <script src="https://unpkg.com/yt-dlp-wasm@latest/dist/yt-dlp.min.js"></script>
+  <!-- Unlock input + spinner control -->
+  <script>
+    const urlBox=document.getElementById('url');
+    urlBox.disabled=false;
+    function showSpin(on){document.getElementById('spin').style.display=on?'block':'none';}
+  </script>
+
+  <!-- Core libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/yt-dlp-wasm@latest/dist/yt-dlp.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
   <script src="main.js"></script>
 </body>
