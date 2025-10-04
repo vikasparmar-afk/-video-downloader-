@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8"/>
+  <title>Video Downloader</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <style>
+    body{font-family:Arial;margin:20px;background:#111;color:#eee}
+    input{width:100%;padding:10px;margin:10px 0;font-size:16px}
+    button{width:100%;padding:12px;background:#e91e63;color:#fff;border:0;font-size:16px}
+    #msg{margin-top:10px}
+  </style>
+</head>
+<body>
+  <h2>Link डालो → Video डाउनलोड</h2>
+  <input id="url" placeholder="YouTube / FB / Insta / Any link">
+  <button onclick="getVideo()">Download</button>
+  <p id="msg"></p>
+
+  <script src="https://unpkg.com/yt-dlp-wasm@latest/dist/yt-dlp.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
