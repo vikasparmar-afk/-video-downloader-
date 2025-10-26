@@ -1,45 +1,117 @@
-<!doctype html>
-<html lang="hi">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <title>Instagram Downloader</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <style>
-    :root{--bg:#111;--card:#1e1e1e;--accent:#e91e63;font-family:Arial,Helvetica,sans-serif}
-    body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);color:#fff;padding:20px}
-    .box{width:100%;max-width:400px;background:var(--card);border-radius:12px;padding:30px;text-align:center;box-shadow:0 0 20px rgba(0,0,0,.5)}
-    h2{margin-bottom:10px}input{width:100%;padding:12px;margin:15px 0;border:none;border-radius:6px;font-size:16px}
-    button{width:100%;padding:12px;border:none;border-radius:6px;background:var(--accent);color:#fff;font-size:16px;cursor:pointer}
-    #msg{margin-top:10px;font-size:14px}#thumb{width:100%;border-radius:6px;margin-top:10px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Work Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
 </head>
 <body>
-  <div class="box">
-    <h2>Instagram Downloader</h2>
-    <input id="url" placeholder="Instagram post/reel URL">
-    <button onclick="getInsta()">Download</button>
-    <p id="msg"></p>
-    <img id="thumb" hidden>
-  </div>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-tasks"></i> Daily Work Manager</h1>
+            <div class="header-controls">
+                <button id="notificationBtn" class="btn-secondary">
+                    <i class="fas fa-bell"></i> Enable Notifications
+                </button>
+                <div class="notification-status" id="notificationStatus">
+                    <span class="status-indicator"></span>
+                    <span class="status-text">Notifications Disabled</span>
+                </div>
+            </div>
+        </header>
 
-  <script>
-    async function getInsta(){
-      const url=document.getElementById('url').value.trim();
-      if(!url){alert('Instagram link डालो!');return;}
-      document.getElementById('msg').innerText='Fetching...';
-      try{
-        // free, no-key API
-        const api=`https://api.instavideosave.com/all-video-downloader?url=${encodeURIComponent(url)}`;
-        const r=await fetch(api);
-        const d=await r.json();
-        if(d.status!=='ok')throw d.msg;
-        const vid=d.data[0].url;          // highest quality
-        document.getElementById('msg').innerHTML=`<a href="${vid}" download style="color:#fff;background:#e91e63;padding:8px 12px;border-radius:4px;text-decoration:none;">Save Video</a>`;
-        document.getElementById('thumb').src=d.thumbnail;document.getElementById('thumb').hidden=false;
-      }catch(e){
-        document.getElementById('msg').innerText='❌ '+e;
-      }
-    }
-  </script>
+        <main class="main-content">
+            <!-- Today's Focus Section -->
+            <section class="today-focus">
+                <h2><i class="fas fa-star"></i> Today's Important Tasks</h2>
+                <div id="todayTasks" class="today-tasks-list">
+                    <p class="empty-state">No important tasks for today. Add some tasks below!</p>
+                </div>
+            </section>
+
+            <!-- Add Task Form -->
+            <section class="add-task-section">
+                <h3><i class="fas fa-plus"></i> Add New Task</h3>
+                <form id="taskForm" class="task-form">
+                    <div class="form-row">
+                        <input type="text" id="taskTitle" placeholder="Task title..." required>
+                        <select id="taskPriority">
+                            <option value="low">Low Priority</option>
+                            <option value="medium">Medium Priority</option>
+                            <option value="high">High Priority</option>
+                            <option value="critical">Critical</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <input type="date" id="taskDueDate" required>
+                        <input type="time" id="taskTime" placeholder="Reminder time">
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-plus"></i> Add Task
+                        </button>
+                    </div>
+                    <textarea id="taskDescription" placeholder="Task description (optional)..." rows="3"></textarea>
+                </form>
+            </section>
+
+            <!-- Tasks List -->
+            <section class="tasks-section">
+                <div class="tasks-header">
+                    <h3><i class="fas fa-list"></i> All Tasks</h3>
+                    <div class="task-filters">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="today">Today</button>
+                        <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+                        <button class="filter-btn" data-filter="completed">Completed</button>
+                    </div>
+                </div>
+                <div id="tasksList" class="tasks-list">
+                    <p class="empty-state">No tasks yet. Add your first task above!</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- Notification Settings Modal -->
+        <div id="settingsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-cog"></i> Notification Settings</h3>
+                    <button class="close-btn" id="closeModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="setting-item">
+                        <label for="dailyReminderTime">Daily Summary Time:</label>
+                        <input type="time" id="dailyReminderTime" value="09:00">
+                    </div>
+                    <div class="setting-item">
+                        <label for="taskReminderEnabled">
+                            <input type="checkbox" id="taskReminderEnabled" checked>
+                            Enable task reminders
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label for="dailySummaryEnabled">
+                            <input type="checkbox" id="dailySummaryEnabled" checked>
+                            Enable daily summary
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="saveSettings" class="btn-primary">Save Settings</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Button -->
+        <button id="settingsBtn" class="settings-btn">
+            <i class="fas fa-cog"></i>
+        </button>
+    </div>
+
+    <script src="app.js"></script>
 </body>
 </html>
