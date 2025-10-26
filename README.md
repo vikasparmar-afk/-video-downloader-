@@ -1,165 +1,177 @@
-# Daily Task Reminder Website
+# Daily Task Reminder with WhatsApp Integration
 
-A comprehensive web application to help you stay organized and never miss your daily tasks like book reading, exercise, work, and more. The app features browser notifications to remind you of your scheduled tasks.
+A modern, feature-rich web application to help you manage and track your daily tasks with intelligent notifications through both browser alerts and WhatsApp messages.
 
 ## Features
 
-### 🎯 Core Functionality
-- **Task Management**: Add, edit, delete, and organize your daily tasks
-- **Categories**: Organize tasks by type (Reading, Exercise, Work, Study, Personal, Health, Other)
-- **Smart Scheduling**: Set specific reminder times with flexible repeat options
-- **Completion Tracking**: Mark tasks as completed and track your progress
+### Core Functionality
+- ✅ **Task Management**: Add, edit, and delete daily tasks with categories
+- 📅 **Flexible Scheduling**: Daily, weekdays, weekends, or weekly recurring tasks
+- ⏰ **Smart Reminders**: Set specific times for task notifications
+- 📊 **Progress Tracking**: Visual progress bars for weekly and monthly completion
+- 🔥 **Streak Counter**: Track your consistency with completion streaks
+- 📱 **Responsive Design**: Works seamlessly on desktop, tablet, and mobile
 
-### 🔔 Notification System
-- **Browser Notifications**: Get reminded exactly when you need to complete tasks
-- **Permission Management**: Easy setup for notification permissions
-- **Smart Timing**: Notifications only for pending tasks at scheduled times
+### Notification System
+- 🔔 **Browser Notifications**: Native browser push notifications
+- 📱 **WhatsApp Integration**: Send reminders directly to your WhatsApp
+- 🎯 **Dual Notification Support**: Get notified through both channels simultaneously
 
-### 📊 Progress Tracking
-- **Daily Stats**: See today's tasks, completion count, and current streak
-- **Weekly/Monthly Progress**: Visual progress bars showing completion rates
-- **Streak Counter**: Track consecutive days of task completion
-- **History Tracking**: All completed tasks are saved with dates
+### Data Management
+- 💾 **Local Storage**: All data stored locally in your browser
+- 📤 **Export/Import**: Backup and restore your task data
+- 🏆 **Achievement Tracking**: Monitor your task completion statistics
 
-### 🎨 User Experience
-- **Responsive Design**: Works perfectly on desktop, tablet, and mobile
-- **Dark Mode Support**: Automatically adapts to system preferences
-- **Intuitive Interface**: Clean, modern design with easy navigation
-- **Offline Support**: Works offline with service worker caching
+## WhatsApp Integration Setup
 
-### 🔄 Repeat Options
-- **Daily**: Tasks that repeat every day
-- **Weekdays Only**: Monday through Friday
-- **Weekends Only**: Saturday and Sunday
-- **Weekly**: Tasks that repeat every 7 days
+The application uses the CallMeBot service for free WhatsApp messaging. To set up WhatsApp notifications:
 
-### 💾 Data Management
-- **Local Storage**: All data is stored locally in your browser
-- **Data Persistence**: Tasks and progress are saved automatically
-- **Export/Import**: Backup and restore your data (feature ready for implementation)
+1. **Add CallMeBot Contact**: Add the phone number `+34 644 41 83 82` to your contacts (name it "CallMeBot")
 
-## How to Use
+2. **Activate API**: Send the message `I allow callmebot to send me messages` to the CallMeBot contact
 
-### Getting Started
-1. Open the website in your browser
-2. Click "Enable Notifications" to receive task reminders
-3. Add your first task using the form at the top
+3. **Get API Key**: Wait for the response message containing your API key: `API Activated for your phone number. Your APIKEY is: XXXXXXXX`
 
-### Adding Tasks
-1. Enter a descriptive task title (e.g., "Read 30 pages of current book")
-2. Select the appropriate category
-3. Set your preferred reminder time
-4. Choose how often the task should repeat
-5. Add optional notes for additional context
-6. Click "Add Task"
+4. **Configure in App**: 
+   - Go to the Notification Settings section
+   - Enable WhatsApp notifications
+   - Enter your phone number with country code (e.g., +1234567890)
+   - Enter your API key from step 3
+   - Click "Save Settings" and then "Send Test Message"
 
-### Managing Tasks
-- **Complete Tasks**: Click the ✅ Complete button when finished
-- **Edit Tasks**: Click the ✏️ Edit button to modify task details
-- **Delete Tasks**: Click the 🗑️ Delete button to remove tasks
-- **Filter Tasks**: Use the dropdown filters to view specific categories or completion status
+### WhatsApp Features
+- 📱 **Rich Formatting**: Messages include task details, time, and emojis
+- ✅ **Delivery Confirmation**: Test message functionality to verify setup
+- 🔒 **Secure Storage**: API keys are stored locally and encrypted
+- 🎯 **Smart Notifications**: Only sends WhatsApp messages for pending tasks
 
-### Tracking Progress
-- View your daily statistics in the overview cards
-- Monitor weekly and monthly completion rates in the progress section
-- Build and maintain your completion streak for motivation
+## Installation
 
-## Technical Details
+This is a client-side web application. Simply serve the files through any web server:
 
-### Browser Compatibility
-- Modern browsers with JavaScript enabled
-- Notification API support for reminders
-- Local Storage for data persistence
+### Option 1: Local Development
+```bash
+# Clone or download the files to a directory
+# Serve using Python (if available)
+python -m http.server 8000
 
-### Files Structure
+# Or use Node.js
+npx serve .
+
+# Then open http://localhost:8000
+```
+
+### Option 2: Static Hosting
+Upload the files to any static hosting service like:
+- GitHub Pages
+- Netlify
+- Vercel
+- Firebase Hosting
+
+## File Structure
+
 ```
 ├── index.html          # Main HTML structure
 ├── styles.css          # CSS styling and responsive design
-├── script.js           # JavaScript functionality
-├── manifest.json       # PWA manifest for mobile installation
+├── script.js           # Main application logic
+├── whatsapp.js         # WhatsApp integration module
+├── app.js              # PWA configuration
+├── manifest.json       # Web app manifest
 ├── sw.js              # Service worker for offline support
 └── README.md          # This documentation
 ```
 
-### Local Storage Data
-The app stores the following data locally:
-- `dailyTasks`: Array of all your tasks
-- `completedTasks`: Object tracking completions by date
-- `taskStreak`: Current consecutive completion streak
-- `lastCompletionDate`: Date of last streak update
+## Usage
+
+### Adding Tasks
+1. Fill in the task title (e.g., "Read 30 pages")
+2. Select a category (Reading, Exercise, Work, Study, Personal, Health, Other)
+3. Set the reminder time
+4. Choose frequency (Daily, Weekdays Only, Weekends Only, Weekly)
+5. Add optional notes
+6. Click "Add Task"
+
+### Managing Notifications
+- **Browser Notifications**: Click "Enable Notifications" when prompted
+- **WhatsApp Notifications**: Configure in the Notification Settings section
+- **Dual Setup**: Enable both for maximum reliability
+
+### Task Categories
+- 📚 **Reading**: Books, articles, educational content
+- 🏃 **Exercise**: Workouts, sports, physical activities
+- 💼 **Work**: Professional tasks and meetings
+- 📖 **Study**: Learning, courses, skill development
+- 🏠 **Personal**: Household tasks and personal care
+- 🏥 **Health**: Medical appointments, medication reminders
+- 📝 **Other**: Miscellaneous tasks
+
+## Technical Details
+
+### Browser Compatibility
+- Chrome/Edge 80+
+- Firefox 75+
+- Safari 13+
+- Mobile browsers with PWA support
+
+### Data Storage
+- Uses HTML5 localStorage for data persistence
+- No server required - fully client-side
+- Export functionality for data backup
+
+### Progressive Web App (PWA)
+- Installable on mobile devices
+- Offline functionality with service worker
+- App-like experience on mobile platforms
+
+### WhatsApp API Limitations
+- Uses CallMeBot free service (some rate limiting may apply)
+- Requires initial setup with phone verification
+- Works with WhatsApp Web/mobile app installed
 
 ## Privacy & Security
 
-- **No Data Collection**: All data stays on your device
-- **No Server Required**: Fully client-side application
-- **No Registration**: No accounts or personal information needed
-- **Browser Storage Only**: Uses secure browser local storage
-
-## Installation as PWA
-
-You can install this app on your device:
-1. Open the website in Chrome, Edge, or Safari
-2. Look for the "Install" prompt or "Add to Home Screen" option
-3. Follow the browser prompts to install
-4. The app will appear as a standalone application on your device
-
-## Tips for Best Results
-
-### Task Organization
-- Use descriptive task names that clearly indicate what needs to be done
-- Set realistic reminder times when you're typically available
-- Group similar tasks using categories for better organization
-- Add notes for tasks that need additional context or instructions
-
-### Building Habits
-- Start with a few essential tasks rather than overwhelming yourself
-- Set consistent times for recurring tasks
-- Use the streak counter as motivation to maintain consistency
-- Review and adjust your tasks regularly based on your changing needs
-
-### Notification Management
-- Ensure notifications are enabled for the best experience
-- Choose reminder times when you're typically available and alert
-- Consider your daily routine when scheduling task reminders
-- Use different categories to prioritize different types of activities
+- **Local Data**: All task data stays on your device
+- **No Tracking**: No analytics or user tracking
+- **API Security**: WhatsApp API keys stored locally only
+- **Open Source**: Full source code available for inspection
 
 ## Troubleshooting
 
-### Notifications Not Working
-- Check that notifications are enabled in your browser settings
-- Ensure the website has permission to send notifications
-- Verify that your device's "Do Not Disturb" mode isn't blocking notifications
+### WhatsApp Not Working
+1. Verify phone number format includes country code (+1234567890)
+2. Ensure CallMeBot contact is saved properly
+3. Confirm API activation message was received
+4. Test with a simple message first
 
-### Data Loss Prevention
-- Avoid clearing your browser data if you want to keep your tasks
-- Consider using the export feature (when implemented) for backups
-- Multiple browser profiles will have separate data
+### Browser Notifications Not Working
+1. Check browser notification permissions
+2. Ensure HTTPS connection (required for notifications)
+3. Verify time settings are correct
 
-### Performance Tips
-- The app is lightweight and should run smoothly on most devices
-- If you experience slowness with many tasks, try filtering to reduce displayed items
-- Clear old completed task data periodically if needed
+### Data Issues
+1. Export data regularly as backup
+2. Clear browser cache if experiencing issues
+3. Check localStorage isn't full
 
-## Future Enhancements
+## Contributing
 
-Potential features for future versions:
-- Data export/import functionality
-- Task templates for common activities
-- Integration with calendar applications
-- Custom notification sounds
-- Advanced analytics and reporting
-- Task sharing and collaboration
-- Sync across devices
+This is an open-source project. Feel free to:
+- Report bugs or issues
+- Suggest new features
+- Submit pull requests
+- Improve documentation
+
+## License
+
+MIT License - See LICENSE file for details
 
 ## Support
 
-This is a client-side web application that runs entirely in your browser. Since no server is involved:
-- All functionality works offline after the initial page load
-- Your data remains private and secure on your device
-- No ongoing costs or subscription fees
-
-For the best experience, use a modern browser and keep it updated.
+For support with:
+- **App Issues**: Check browser console for errors
+- **WhatsApp Setup**: Visit [CallMeBot Documentation](https://www.callmebot.com/blog/free-api-whatsapp-messages/)
+- **General Usage**: Refer to this README
 
 ---
 
-**Start organizing your daily tasks today and build productive habits with consistent reminders!** 🎯
+**Stay organized and never miss your daily tasks! 🎯**

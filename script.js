@@ -6,6 +6,9 @@ class DailyTaskReminder {
         this.streak = parseInt(localStorage.getItem('taskStreak')) || 0;
         this.lastCompletionDate = localStorage.getItem('lastCompletionDate') || '';
         
+        // Initialize WhatsApp notifier
+        this.whatsappNotifier = new WhatsAppNotifier();
+        
         this.init();
     }
 
@@ -452,6 +455,7 @@ class DailyTaskReminder {
     }
 
     sendNotification(task) {
+        // Send browser notification if enabled
         if ('Notification' in window && Notification.permission === 'granted') {
             const categoryEmojis = {
                 reading: '📚',
@@ -469,6 +473,14 @@ class DailyTaskReminder {
                 badge: '/favicon.ico',
                 tag: task.id,
                 requireInteraction: true
+            });
+        }
+
+        // Send WhatsApp notification if enabled and configured
+        if (this.whatsappNotifier.isEnabled()) {
+            this.whatsappNotifier.sendTaskReminder(task).catch(error => {
+                console.error('WhatsApp notification failed:', error);
+                this.showNotification('⚠️ WhatsApp notification failed. Check your settings.', 'warning');
             });
         }
 
