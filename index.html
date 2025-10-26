@@ -3,115 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Work Manager</title>
+    <title>Daily Task Reminder</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2563eb">
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <h1><i class="fas fa-tasks"></i> Daily Work Manager</h1>
-            <div class="header-controls">
-                <button id="notificationBtn" class="btn-secondary">
-                    <i class="fas fa-bell"></i> Enable Notifications
-                </button>
-                <div class="notification-status" id="notificationStatus">
-                    <span class="status-indicator"></span>
-                    <span class="status-text">Notifications Disabled</span>
-                </div>
-            </div>
+        <header>
+            <h1>📋 Daily Task Reminder</h1>
+            <p>Stay organized and never miss your daily tasks!</p>
         </header>
 
-        <main class="main-content">
-            <!-- Today's Focus Section -->
-            <section class="today-focus">
-                <h2><i class="fas fa-star"></i> Today's Important Tasks</h2>
-                <div id="todayTasks" class="today-tasks-list">
-                    <p class="empty-state">No important tasks for today. Add some tasks below!</p>
-                </div>
-            </section>
+        <section class="notification-permission">
+            <div id="notification-banner" class="banner hidden">
+                <p>📢 Enable notifications to get reminders for your tasks!</p>
+                <button id="enable-notifications" class="btn btn-primary">Enable Notifications</button>
+                <button id="dismiss-banner" class="btn btn-secondary">Dismiss</button>
+            </div>
+        </section>
 
-            <!-- Add Task Form -->
-            <section class="add-task-section">
-                <h3><i class="fas fa-plus"></i> Add New Task</h3>
-                <form id="taskForm" class="task-form">
+        <section class="task-input">
+            <div class="input-group">
+                <h2>Add New Task</h2>
+                <form id="task-form">
                     <div class="form-row">
-                        <input type="text" id="taskTitle" placeholder="Task title..." required>
-                        <select id="taskPriority">
-                            <option value="low">Low Priority</option>
-                            <option value="medium">Medium Priority</option>
-                            <option value="high">High Priority</option>
-                            <option value="critical">Critical</option>
+                        <input type="text" id="task-title" placeholder="Task title (e.g., Read 30 pages)" required>
+                        <select id="task-category">
+                            <option value="reading">📚 Reading</option>
+                            <option value="exercise">🏃 Exercise</option>
+                            <option value="work">💼 Work</option>
+                            <option value="study">📖 Study</option>
+                            <option value="personal">🏠 Personal</option>
+                            <option value="health">🏥 Health</option>
+                            <option value="other">📝 Other</option>
                         </select>
                     </div>
                     <div class="form-row">
-                        <input type="date" id="taskDueDate" required>
-                        <input type="time" id="taskTime" placeholder="Reminder time">
-                        <button type="submit" class="btn-primary">
-                            <i class="fas fa-plus"></i> Add Task
-                        </button>
+                        <input type="time" id="reminder-time" required>
+                        <select id="repeat-frequency">
+                            <option value="daily">Daily</option>
+                            <option value="weekdays">Weekdays Only</option>
+                            <option value="weekends">Weekends Only</option>
+                            <option value="weekly">Weekly</option>
+                        </select>
                     </div>
-                    <textarea id="taskDescription" placeholder="Task description (optional)..." rows="3"></textarea>
+                    <textarea id="task-notes" placeholder="Additional notes (optional)"></textarea>
+                    <button type="submit" class="btn btn-primary">Add Task</button>
                 </form>
-            </section>
+            </div>
+        </section>
 
-            <!-- Tasks List -->
-            <section class="tasks-section">
-                <div class="tasks-header">
-                    <h3><i class="fas fa-list"></i> All Tasks</h3>
-                    <div class="task-filters">
-                        <button class="filter-btn active" data-filter="all">All</button>
-                        <button class="filter-btn" data-filter="today">Today</button>
-                        <button class="filter-btn" data-filter="upcoming">Upcoming</button>
-                        <button class="filter-btn" data-filter="completed">Completed</button>
-                    </div>
+        <section class="tasks-overview">
+            <div class="stats">
+                <div class="stat-card">
+                    <h3>Today's Tasks</h3>
+                    <span id="today-count">0</span>
                 </div>
-                <div id="tasksList" class="tasks-list">
-                    <p class="empty-state">No tasks yet. Add your first task above!</p>
+                <div class="stat-card">
+                    <h3>Completed</h3>
+                    <span id="completed-count">0</span>
                 </div>
-            </section>
-        </main>
-
-        <!-- Notification Settings Modal -->
-        <div id="settingsModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3><i class="fas fa-cog"></i> Notification Settings</h3>
-                    <button class="close-btn" id="closeModal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div class="setting-item">
-                        <label for="dailyReminderTime">Daily Summary Time:</label>
-                        <input type="time" id="dailyReminderTime" value="09:00">
-                    </div>
-                    <div class="setting-item">
-                        <label for="taskReminderEnabled">
-                            <input type="checkbox" id="taskReminderEnabled" checked>
-                            Enable task reminders
-                        </label>
-                    </div>
-                    <div class="setting-item">
-                        <label for="dailySummaryEnabled">
-                            <input type="checkbox" id="dailySummaryEnabled" checked>
-                            Enable daily summary
-                        </label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button id="saveSettings" class="btn-primary">Save Settings</button>
+                <div class="stat-card">
+                    <h3>Streak</h3>
+                    <span id="streak-count">0</span> days
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Settings Button -->
-        <button id="settingsBtn" class="settings-btn">
-            <i class="fas fa-cog"></i>
-        </button>
+        <section class="task-list">
+            <div class="list-header">
+                <h2>Your Tasks</h2>
+                <div class="filter-controls">
+                    <select id="filter-category">
+                        <option value="all">All Categories</option>
+                        <option value="reading">📚 Reading</option>
+                        <option value="exercise">🏃 Exercise</option>
+                        <option value="work">💼 Work</option>
+                        <option value="study">📖 Study</option>
+                        <option value="personal">🏠 Personal</option>
+                        <option value="health">🏥 Health</option>
+                        <option value="other">📝 Other</option>
+                    </select>
+                    <select id="filter-status">
+                        <option value="all">All Tasks</option>
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+            </div>
+            <div id="tasks-container">
+                <div class="empty-state">
+                    <p>🎯 No tasks yet! Add your first task above to get started.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="progress-tracking">
+            <h2>Progress Tracking</h2>
+            <div class="progress-grid">
+                <div class="progress-item">
+                    <h4>This Week</h4>
+                    <div class="progress-bar">
+                        <div id="week-progress" class="progress-fill"></div>
+                    </div>
+                    <span id="week-percentage">0%</span>
+                </div>
+                <div class="progress-item">
+                    <h4>This Month</h4>
+                    <div class="progress-bar">
+                        <div id="month-progress" class="progress-fill"></div>
+                    </div>
+                    <span id="month-percentage">0%</span>
+                </div>
+            </div>
+        </section>
     </div>
 
-    <script src="app.js"></script>
+    <!-- Task Modal -->
+    <div id="task-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Edit Task</h3>
+            <form id="edit-task-form">
+                <input type="hidden" id="edit-task-id">
+                <input type="text" id="edit-task-title" placeholder="Task title" required>
+                <select id="edit-task-category">
+                    <option value="reading">📚 Reading</option>
+                    <option value="exercise">🏃 Exercise</option>
+                    <option value="work">💼 Work</option>
+                    <option value="study">📖 Study</option>
+                    <option value="personal">🏠 Personal</option>
+                    <option value="health">🏥 Health</option>
+                    <option value="other">📝 Other</option>
+                </select>
+                <input type="time" id="edit-reminder-time" required>
+                <select id="edit-repeat-frequency">
+                    <option value="daily">Daily</option>
+                    <option value="weekdays">Weekdays Only</option>
+                    <option value="weekends">Weekends Only</option>
+                    <option value="weekly">Weekly</option>
+                </select>
+                <textarea id="edit-task-notes" placeholder="Additional notes"></textarea>
+                <div class="modal-buttons">
+                    <button type="submit" class="btn btn-primary">Update Task</button>
+                    <button type="button" id="cancel-edit" class="btn btn-secondary">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
